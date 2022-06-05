@@ -594,7 +594,33 @@ definitions:
         type: "string"
         format: "date-time"
   UserLoginResponse:
-    $ref: "#/definitions/AdminLoginResponse"
+    type: "object"
+    properties:
+      error:
+        type: "boolean"
+      message:
+        type: "string"
+      loginResult:
+        type: "object"
+        properties:
+          id:
+            type: "string"
+          name:
+            type: "string"
+          address:
+            type: "string"
+          number:
+            type: "string"
+          parentNumber:
+            type: "string"
+          email:
+            type: "string"
+          role:
+            type: "string"
+          photo:
+            type: "string"
+          token:
+            type: "string"
   UserSuccessResponse:
     type: "object"
     properties:
