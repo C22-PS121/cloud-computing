@@ -73,7 +73,7 @@ export const placeDetail = async (req, res) => {
         return res.json({
             error: false,
             message: "Data berhasil ditemukan",
-            place: placeExist[0] 
+            place: placeExist[0]
         });
     } else {
         return res.status(400).json({

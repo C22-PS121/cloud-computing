@@ -70,7 +70,7 @@ export const userRegister = async (req, res) => {
     }
 
     const id = `U-${uuidv4()}`;
-    const photo = '';
+    const photo = "https://storage.googleapis.com/dangerdetection.appspot.com/users/default_profile.png";
     const hashPass = hashPassword(password);
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
@@ -115,7 +115,7 @@ export const userLogin = async (req, res) => {
         });
     }
 
-    const queryUserExist = `SELECT id, name, email, password FROM \`dangerdetection.dantion_big_query.users\` WHERE email=@email`;
+    const queryUserExist = `SELECT * EXCEPT (createdAt,updatedAt) FROM \`dangerdetection.dantion_big_query.users\` WHERE email=@email`;
     let options = {
         query: queryUserExist,
         location: 'asia-southeast2',
@@ -148,9 +148,14 @@ export const userLogin = async (req, res) => {
             loginResult: {
                 id: userExist.id,
                 name: userExist.name,
+                address: userExist.address,
+                number: userExist.number,
+                parentNumber: userExist.parentNumber,
                 email: userExist.email,
-                token: accessToken
-            }
+                role: userExist.role,
+                photo: userExist.photo,
+                token: accessToken,
+            },
         });
     }
 }
@@ -172,18 +177,7 @@ export const userDetail = async (req, res) => {
         return res.json({
             error: false,
             message: "Berhasil mendapatakan detail user",
-            user: {
-                id: userExist.id,
-                name: userExist.name,
-                address: userExist.address,
-                number: userExist.number,
-                parentNumber: userExist.parentNumber,
-                email: userExist.email,
-                password: userExist.password,
-                photo: userExist.photo,
-                createdAt: userExist.createdAt,
-                updatedAt: userExist.updatedAt,
-            },
+            user: userExist,
         });
     } else {
         return res.status(400).json({
