@@ -696,7 +696,7 @@ definitions:
         type: "string"
       message:
         type: "string"
-      user:
+      detections:
         $ref: "#/definitions/Detection"
   AddDetectionBody:
     type: "object"
@@ -765,7 +765,7 @@ definitions:
         type: "string"
       message:
         type: "string"
-      user:
+      places:
         $ref: "#/definitions/Place"
   AddPlaceBody:
     type: "object"
