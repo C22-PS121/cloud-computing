@@ -1,10 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import fs from 'fs';
-// import { Storage } from "@google-cloud/storage";
-// const { Storage } = require('@google-cloud/storage');
+// import fs from 'fs';
 import storagePackage from '@google-cloud/storage';
 const { Storage } = storagePackage;
-// const Storage = Storage;
 import { bigqueryClient } from '../index.js';
 
 export const detectionAll = async (req, res) => {
@@ -16,7 +13,7 @@ export const detectionAll = async (req, res) => {
     const [detections] = await bigqueryClient.query(options);
 
     return res.json({
-        status: "Sukses",
+        error: false,
         message: "Berhasil mendapatkan data detection",
         detections: detections
     });
@@ -39,7 +36,7 @@ export const detectionAdd = async (req, res) => {
 		city === undefined
 	) {
 		return res.status(400).json({
-			status: "Gagal",
+			error: true,
 			message: "Masukkan data dengan benar",
 		});
 	}
@@ -53,7 +50,7 @@ export const detectionAdd = async (req, res) => {
     const [userExist] = await bigqueryClient.query(options);
 	if (userExist.emailCount === 0) {
 		return res.status(400).json({
-			status: "Gagal",
+			error: true,
 			message: "User tidak ditemukan",
 		});
 	}
@@ -96,7 +93,7 @@ export const detectionAdd = async (req, res) => {
 
         await bigqueryClient.query(options);
         return res.json({
-            status: "Sukses",
+            error: false,
             message: "Data berhasil ditambahkan",
         });
     });
@@ -115,13 +112,13 @@ export const detectionDetail = async (req, res) => {
     const [detectExist] = await bigqueryClient.query(options);
     if(detectExist.length !== 0) {
         return res.json({
-            status: "Sukses",
+            error: false,
             message: "Data berhasil ditemukan",
             detection: detectExist 
         });
     } else {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Data tidak ditemukan"
         });
     }
@@ -134,7 +131,7 @@ export const detectionUpdate = async (req, res) => {
 
     if(id === undefined || status === undefined) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Masukkan data dengan benar"
         });
     }
@@ -147,9 +144,9 @@ export const detectionUpdate = async (req, res) => {
     };
     const [detectExist] = await bigqueryClient.query(options);
     if(detectExist.length === 0) {
-        return res.json({
-            status: "Gagal",
-            message: "Data tidak ditemukan" 
+        return res.status(400).json({
+            error: true,
+            message: "Data tidak ditemukan",
         });
     }
     
@@ -164,8 +161,8 @@ export const detectionUpdate = async (req, res) => {
     const userRole = userExist[0].role;
     const validatorId = userExist[0].validatorId;
     if (userRole !== "polisi" || userRole !== "ambulan" || userRole !== "damkar") {
-        return res.json({
-            status: "Gagal",
+        return res.status(400).json({
+            error: true,
             message: "Anda tidak berhak memvalidasi data",
         });
     }
@@ -189,7 +186,7 @@ export const detectionUpdate = async (req, res) => {
     await bigqueryClient.query(options);
 
     return res.json({
-        status: "Sukses",
+        error: false,
         message: "Data berhasil diupdate"
     });
 }
@@ -198,7 +195,7 @@ export const detectionDelete = async (req, res) => {
     const { id } = req.params;
     if(id === undefined) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Masukkan data dengan benar"
         });
     }
@@ -212,21 +209,21 @@ export const detectionDelete = async (req, res) => {
     const [rDetectExist] = await bigqueryClient.query(options);
     if(rDetectExist.length === 0) {
         return res.status(400).json({
-            status: "Gagal",
-            message: " Data tidak ditemukan"
+            error: true,
+            message: "Data tidak ditemukan"
         });
     }
 
-    const detectExist = rDetectExist[0];
-    const recordName = detectExist.recordUrl.split('/').slice(3).join('/');
-    fs.unlink(`./${recordName}`, (err) => {
-        if(err) {
-            res.status(201).json({
-                status: "Gagal",
-                message: "Tidak dapat menghapus file"
-            });
-        }
-    });
+    // const detectExist = rDetectExist[0];
+    // const recordName = detectExist.recordUrl.split('/').slice(3).join('/');
+    // fs.unlink(`./${recordName}`, (err) => {
+    //     if(err) {
+    //         res.status(400).json({
+    //             error: true,
+    //             message: "Tidak dapat menghapus file"
+    //         });
+    //     }
+    // });
 
     const queryDeleteDetection = `DELETE \`dangerdetection.dantion_big_query.detections\` WHERE id=@id`;
     options = {
@@ -237,7 +234,7 @@ export const detectionDelete = async (req, res) => {
     await bigqueryClient.query(options);
 
     return res.json({
-        status: "Sukses",
+        error: false,
         message: "Data berhasil dihapus"
     });
 }

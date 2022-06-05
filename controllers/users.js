@@ -1,19 +1,15 @@
 import { generateAccessToken } from '../routes/auth.js';
 import { hashPassword, checkPassword } from '../utils/helpers.js';
 import { v4 as uuidv4 } from 'uuid';
-// import { Storage } from "@google-cloud/storage";
-// import { Storage } from "@google-cloud/storage";
-// const { Storage } = require('@google-cloud/storage');
 import storagePackage from '@google-cloud/storage';
 const { Storage } = storagePackage;
-// const Storage = Storage;
 import { bigqueryClient } from '../index.js';
 
 export const userAll = async (req, res) => {
     const {id} = req.query
     if (id === undefined) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Gagal mengambil user. Mohon isi data dengan benar"
         });
     }
@@ -26,7 +22,7 @@ export const userAll = async (req, res) => {
     const [adminsExist] = await bigqueryClient.query(options);
     if (adminsExist.length === 0){
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Gagal melihat user, Anda tidak berhak",
         });
     }
@@ -39,7 +35,7 @@ export const userAll = async (req, res) => {
     const [users] = await bigqueryClient.query(options);
 
     return res.json({
-        status: "Sukses",
+        error: false,
         message: "Berhasil Mendapatkan Semua User",
         users
     });
@@ -53,7 +49,7 @@ export const userRegister = async (req, res) => {
     
     if (name === undefined || address === undefined || number === undefined || parentNumber === undefined || email === undefined || password === undefined) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Gagal menambahkan user. Mohon isi data dengan benar"
         });
     }
@@ -68,7 +64,7 @@ export const userRegister = async (req, res) => {
 
     if(userExist[0].emailCount !== 0) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Gagal menambahkan user. Email sudah terdaftar"
         });
     }
@@ -104,7 +100,7 @@ export const userRegister = async (req, res) => {
     await bigqueryClient.query(options);
 
     return res.json({
-        status: "Sukses",
+        error: false,
         message: "User berhasil ditambahkan"
     });
 }
@@ -114,7 +110,7 @@ export const userLogin = async (req, res) => {
 
     if(email === undefined || password === undefined) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Isi data dengan benar"
         });
     }
@@ -129,7 +125,7 @@ export const userLogin = async (req, res) => {
 
     if(rUserExist.length === 0) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "User tidak terdaftar"
         });
     }
@@ -137,7 +133,7 @@ export const userLogin = async (req, res) => {
     const userExist = rUserExist[0];
     if(!checkPassword(password, userExist.password)) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Login gagal"
         });
     }
@@ -147,7 +143,7 @@ export const userLogin = async (req, res) => {
         const accessToken = generateAccessToken(user);
 
         return res.json({
-            status: "Sukses",
+            error: false,
             message: "Berhasil Login",
             loginResult: {
                 id: userExist.id,
@@ -174,24 +170,24 @@ export const userDetail = async (req, res) => {
         const userExist = rUserExist[0];
         console.log(userExist);
         return res.json({
-					status: "Sukses",
-                    message: "Berhasil mendapatakan detail user",
-					user: {
-						id: userExist.id,
-						name: userExist.name,
-						address: userExist.address,
-						number: userExist.number,
-						parentNumber: userExist.parentNumber,
-						email: userExist.email,
-						password: userExist.password,
-						photo: userExist.photo,
-						createdAt: userExist.createdAt,
-						updatedAt: userExist.updatedAt,
-					},
-				});
+            error: false,
+            message: "Berhasil mendapatakan detail user",
+            user: {
+                id: userExist.id,
+                name: userExist.name,
+                address: userExist.address,
+                number: userExist.number,
+                parentNumber: userExist.parentNumber,
+                email: userExist.email,
+                password: userExist.password,
+                photo: userExist.photo,
+                createdAt: userExist.createdAt,
+                updatedAt: userExist.updatedAt,
+            },
+        });
     } else {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "User tidak ditemukan"
         });
     }
@@ -204,7 +200,7 @@ export const userUpdatePassword = async (req, res) => {
         newPassword === undefined
 	) {
 		return res.status(400).json({
-			status: "Gagal",
+			error: true,
 			message: "Gagal memperbarui user. Mohon isi data dengan benar",
 		});
 	}
@@ -217,14 +213,14 @@ export const userUpdatePassword = async (req, res) => {
 	const [rUserExist] = await bigqueryClient.query(options);
 	if (rUserExist.length === 0) {
 		return res.status(400).json({
-			status: "Gagal",
+			error: true,
 			message: "User tidak ditemukan",
 		});
 	}
 	const userExist = rUserExist[0];
     if (!checkPassword(password, userExist.password)) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Ubah Kata Sandi Gagal",
         });
     }
@@ -244,7 +240,7 @@ export const userUpdatePassword = async (req, res) => {
 	await bigqueryClient.query(options);
 
 	return res.json({
-		status: "Sukses",
+		error: false,
 		message: "Kata Sandi Berhasil diperbarui",
 	});
 };
@@ -254,7 +250,7 @@ export const userUpdate = async (req, res) => {
     } = req.body;
     if (id === undefined || name === undefined || address === undefined || number === undefined || parentNumber === undefined || email === undefined) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Gagal memperbarui user. Mohon isi data dengan benar"
         });
     }
@@ -267,7 +263,7 @@ export const userUpdate = async (req, res) => {
     const [rUserExist] = await bigqueryClient.query(options);
     if(rUserExist.length === 0) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "User tidak ditemukan"
         });
     }
@@ -290,7 +286,7 @@ export const userUpdate = async (req, res) => {
     await bigqueryClient.query(options);
 
     return res.json({
-        status: "Sukses",
+        error: false,
         message: "User berhasil diupdate"
     });
 }
@@ -301,7 +297,7 @@ export const userUpdatePhoto = async (req, res) => {
 
 	if (id === undefined) {
 		return res.status(400).json({
-			status: "Gagal",
+			error: true,
 			message: "Gagal memperbarui user. Mohon isi data dengan benar",
 		});
 	}
@@ -314,7 +310,7 @@ export const userUpdatePhoto = async (req, res) => {
 	const [rUserExist] = await bigqueryClient.query(options);
 	if (rUserExist.length === 0) {
 		return res.status(400).json({
-			status: "Gagal",
+			error: true,
 			message: "User tidak ditemukan",
 		});
 	}
@@ -332,7 +328,7 @@ export const userUpdatePhoto = async (req, res) => {
 
 		blobStream.on("error", (err) => {
 			return res.status(400).json({
-				status: "Gagal",
+				error: true,
 				message: err,
 			});
 		});
@@ -356,7 +352,7 @@ export const userUpdatePhoto = async (req, res) => {
 	await bigqueryClient.query(options);
 
 	return res.json({
-		status: "Sukses",
+		error: false,
 		message: "Foto User berhasil diupdate",
 	});
 };

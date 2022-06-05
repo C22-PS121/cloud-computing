@@ -7,7 +7,7 @@ export const adminLogin = async (req, res) => {
     
     if(email === undefined || password === undefined) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Masukkan data dengan benar"
         });
     }
@@ -21,7 +21,7 @@ export const adminLogin = async (req, res) => {
     const [rAdminExist] = await bigqueryClient.query(options);
     if(rAdminExist.length === 0) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Admin tidak terdaftar"
         });
     }
@@ -29,7 +29,7 @@ export const adminLogin = async (req, res) => {
     const adminExist = rAdminExist[0];
     if(!checkPassword(password, adminExist.password)) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Login gagal"
         });
     }
@@ -39,7 +39,7 @@ export const adminLogin = async (req, res) => {
         const accessToken = generateAccessToken(admin);
 
         return res.json({
-            status: "Sukses",
+            error: false,
             message: "Berhasil Login",
             loginResult: {
                 id: adminExist.id,
@@ -54,7 +54,7 @@ export const adminUpdateUserRole = async (req, res) => {
 	const { userId, role } = req.body;
 	if (userId === undefined || role === undefined) {
 		return res.status(400).json({
-			status: "Gagal",
+			error: true,
 			message: "Gagal memperbarui role user. Mohon isi data dengan benar",
 		});
 	}
@@ -68,7 +68,7 @@ export const adminUpdateUserRole = async (req, res) => {
     const [userExist] = await bigqueryClient.query(options);
 	if (userExist.length === 0) {
 		return res.status(400).json({
-			status: "Gagal",
+			error: true,
 			message: "User tidak ditemukan",
 		});
 	}
@@ -87,7 +87,7 @@ export const adminUpdateUserRole = async (req, res) => {
     await bigqueryClient.query(options);
 
 	return res.json({
-		status: "Sukses",
+		error: false,
 		message: "Role User berhasil diperbarui",
 	});
 };

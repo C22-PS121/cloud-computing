@@ -507,15 +507,15 @@ definitions:
   StatusMessageResponse:
     type: "object"
     properties:
-      status:
-        type: "string"
+      error:
+        type: "boolean"
       message:
         type: "string"
   AdminLoginResponse:
     type: "object"
     properties:
-      status:
-        type: "string"
+      error:
+        type: "boolean"
       message:
         type: "string"
       loginResult:
@@ -598,8 +598,8 @@ definitions:
   UserSuccessResponse:
     type: "object"
     properties:
-      status:
-        type: "string"
+      error:
+        type: "boolean"
       message:
         type: "string"
       user:
@@ -692,8 +692,8 @@ definitions:
   DetectionSuccessResponse:
     type: "object"
     properties:
-      status:
-        type: "string"
+      error:
+        type: "boolean"
       message:
         type: "string"
       detections:
@@ -761,8 +761,8 @@ definitions:
   PlaceSuccessResponse:
     type: "object"
     properties:
-      status:
-        type: "string"
+      error:
+        type: "boolean"
       message:
         type: "string"
       places:

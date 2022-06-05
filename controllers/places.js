@@ -9,7 +9,7 @@ export const placeAll = async (req, res) => {
     const [places] = await bigqueryClient.query(options);
 
     return res.json({
-        status: "Sukses",
+        error: false,
         message: "Berhasil mendapatkan data place",
         places: places
     });
@@ -22,7 +22,7 @@ export const placeAdd = async (req, res) => {
 
     if(lat === undefined || lon === undefined || radius === undefined || type === undefined) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Masukkan data dengan benar"
         });
     }
@@ -52,7 +52,7 @@ export const placeAdd = async (req, res) => {
     await bigqueryClient.query(options);
     
     return res.json({
-        status: "Sukses",
+        error: false,
         message: "Data berhasil ditambahkan"
     });
 }
@@ -69,13 +69,13 @@ export const placeDetail = async (req, res) => {
     const [placeExist] = await bigqueryClient.query(options);
     if(placeExist.length !== 0) {
         return res.json({
-            status: "Sukses",
+            error: false,
             message: "Data berhasil ditemukan",
             place: placeExist[0] 
         });
     } else {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Data tidak ditemukan"
         });
     }
@@ -88,7 +88,7 @@ export const placeUpdate = async (req, res) => {
 
     if(id === undefined || lat === undefined || lon === undefined || radius === undefined || type === undefined) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Masukkan data dengan benar"
         });
     }
@@ -101,9 +101,9 @@ export const placeUpdate = async (req, res) => {
     };
     const [placeExist] = await bigqueryClient.query(options);
     if(placeExist.length === 0) {
-        return res.json({
-            status: "Gagal",
-            message: "Data tidak ditemukan" 
+        return res.status(400).json({
+            error: true,
+            message: "Data tidak ditemukan",
         });
     }
 
@@ -126,7 +126,7 @@ export const placeUpdate = async (req, res) => {
     await bigqueryClient.query(options);
 
     return res.json({
-        status: "Sukses",
+        error: false,
         message: "Data berhasil diupdate"
     });
 }
@@ -136,7 +136,7 @@ export const placeDelete = async (req, res) => {
     
     if(id === undefined) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Masukkan data dengan benar"
         });
     }
@@ -150,7 +150,7 @@ export const placeDelete = async (req, res) => {
     const [placeExist] = await bigqueryClient.query(options);
     if(placeExist.length === 0) {
         return res.status(400).json({
-            status: "Gagal",
+            error: true,
             message: "Data tidak ditemukan"
         });
     }
@@ -164,7 +164,7 @@ export const placeDelete = async (req, res) => {
     await bigqueryClient.query(options);
 
     return res.json({
-        status: "Sukses",
+        error: false,
         message: "Data berhasil dihapus"
     });
 }
