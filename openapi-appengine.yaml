@@ -189,7 +189,7 @@ paths:
         201:
           description: "success register user"
           schema:
-            $ref: "#/definitions/User"
+            $ref: "#/definitions/StatusMessageResponse"
         400:
           description: "failed register user"
           schema:

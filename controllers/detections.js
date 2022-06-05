@@ -26,6 +26,7 @@ export const detectionAdd = async (req, res) => {
 	const { lat, lon, type, userId, city } = req.body;
 	const file = req.files.recordUrl;
 	const status = "invalid";
+	const validatorId = null;
     const storage = new Storage({ keyFilename: "dangerdetection-key.json" });
 	const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
 	if (
@@ -72,8 +73,8 @@ export const detectionAdd = async (req, res) => {
         const recordUrl = `https://storage.googleapis.com/${bucket.name}/records/${recordName}`;
 
         const queryNewDetection = `INSERT \`dangerdetection.dantion_big_query.detections\`
-        (id, lat, lon, recordUrl, type, status, userId, createdAt, updatedAt, city)
-        VALUES (@id, @lat, @lon, @recordUrl, @type, @status, @userId, @createdAt, @updatedAt, @city)`;
+        (id, lat, lon, recordUrl, type, status, userId, createdAt, updatedAt, city, validatorId)
+        VALUES (@id, @lat, @lon, @recordUrl, @type, @status, @userId, @createdAt, @updatedAt, @city, @validatorId)`;
 
         options = {
             query: queryNewDetection,
@@ -88,7 +89,8 @@ export const detectionAdd = async (req, res) => {
                 userId: userId,
                 city: city,
                 createdAt: createdAt,
-                updatedAt: updatedAt
+                updatedAt: updatedAt,
+                validatorId: validatorId
             }
         };
 
