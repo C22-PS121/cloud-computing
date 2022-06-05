@@ -717,6 +717,9 @@ definitions:
         type: "string"
       city:
         type: "string"
+      recordUrl:
+        type: "string"
+        format: "binary"
   DetectionUpdateBody:
     type: "object"
     properties:

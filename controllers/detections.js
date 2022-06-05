@@ -22,8 +22,9 @@ export const detectionAll = async (req, res) => {
 export const detectionAdd = async (req, res) => {
 	const { lat, lon, type, userId, city } = req.body;
 	const file = req.files.recordUrl;
+    let latFloat = parseFloat(lat);
+    let lonFloat = parseFloat(lon);
 	const status = "invalid";
-	const validatorId = null;
     const storage = new Storage({ keyFilename: "dangerdetection-key.json" });
 	const bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET);
 	if (
@@ -70,26 +71,25 @@ export const detectionAdd = async (req, res) => {
         const recordUrl = `https://storage.googleapis.com/${bucket.name}/records/${recordName}`;
 
         const queryNewDetection = `INSERT \`dangerdetection.dantion_big_query.detections\`
-        (id, lat, lon, recordUrl, type, status, userId, createdAt, updatedAt, city, validatorId)
-        VALUES (@id, @lat, @lon, @recordUrl, @type, @status, @userId, @createdAt, @updatedAt, @city, @validatorId)`;
+        (id, lat, lon, recordUrl, type, status, userId, createdAt, updatedAt, city)
+        VALUES (@id, @lat, @lon, @recordUrl, @type, @status, @userId, @createdAt, @updatedAt, @city)`;
 
         options = {
-            query: queryNewDetection,
-            location: 'asia-southeast2',
-            params: {
-                id: id,
-                lat: lat,
-                lon: lon,
-                recordUrl: recordUrl,
-                type: type,
-                status: status,
-                userId: userId,
-                city: city,
-                createdAt: createdAt,
-                updatedAt: updatedAt,
-                validatorId: validatorId
-            }
-        };
+					query: queryNewDetection,
+					location: "asia-southeast2",
+					params: {
+						id: id,
+						lat: latFloat,
+						lon: lonFloat,
+						recordUrl: recordUrl,
+						type: type,
+						status: status,
+						userId: userId,
+						city: city,
+						createdAt: createdAt,
+						updatedAt: updatedAt,
+					},
+				};
 
         await bigqueryClient.query(options);
         return res.json({

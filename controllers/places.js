@@ -11,7 +11,7 @@ export const placeAll = async (req, res) => {
     return res.json({
         error: false,
         message: "Berhasil mendapatkan data place",
-        places: places
+        places
     });
 }
 
@@ -27,6 +27,8 @@ export const placeAdd = async (req, res) => {
         });
     }
 
+    let latFloat = parseFloat(lat);
+    let lonFloat = parseFloat(lon);
     const id = "P-" + uuidv4();
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
@@ -36,18 +38,18 @@ export const placeAdd = async (req, res) => {
     VALUES (@id, @lat, @lon, @radius, @type, @createdAt, @updatedAt)`;
 
     options = {
-        query: queryNewPlace,
-        location: 'asia-southeast2',
-        params: {
-            id: id,
-            lat: lat,
-            lon: lon,
-            radius: radius,
-            type: type,
-            createdAt: createdAt,
-            updatedAt: updatedAt
-        }
-    };
+			query: queryNewPlace,
+			location: "asia-southeast2",
+			params: {
+				id: id,
+				lat: latFloat,
+				lon: lonFloat,
+				radius: radius,
+				type: type,
+				createdAt: createdAt,
+				updatedAt: updatedAt,
+			},
+		};
 
     await bigqueryClient.query(options);
     
@@ -92,7 +94,8 @@ export const placeUpdate = async (req, res) => {
             message: "Masukkan data dengan benar"
         });
     }
-
+    let latFloat = parseFloat(lat);
+    let lonFloat = parseFloat(lon);
     const queryPlaceExist = `SELECT * FROM \`dangerdetection.dantion_big_query.places\` WHERE id=@id`;
     let options = {
         query: queryPlaceExist,
@@ -112,17 +115,17 @@ export const placeUpdate = async (req, res) => {
     const queryUpdate = `UPDATE \`dangerdetection.dantion_big_query.places\`
     SET lat=@lat, lon=@lon, radius=@radius, type=@type, updatedAt=@updatedAt WHERE id=@id`;
     options = {
-        query: queryUpdate,
-        location: 'asia-southeast2',
-        params: { 
-            id: id,
-            lat: lat,
-            lon: lon,
-            radius: radius,
-            type: type, 
-            updatedAt: new Date().toISOString()
-        }
-    };
+			query: queryUpdate,
+			location: "asia-southeast2",
+			params: {
+				id: id,
+				lat: latFloat,
+				lon: lonFloat,
+				radius: radius,
+				type: type,
+				updatedAt: updatedAt,
+			},
+		};
     await bigqueryClient.query(options);
 
     return res.json({
