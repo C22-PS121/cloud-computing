@@ -26,7 +26,24 @@ export const detectionAll = async (req, res) => {
         detections
     });
 }
+export const getDetectionStatistic = async (req, res) => {
+	const queryStats = `
+    SELECT COUNT(type) AS kecelakaan, (SELECT COUNT(type) FROM \`dangerdetection.dantion_big_query.detections\` WHERE type = 'kejahatan') AS kejahatan,
+    (SELECT COUNT(type) FROM \`dangerdetection.dantion_big_query.detections\` WHERE type = 'kebakaran') AS kebakaran
+    FROM \`dangerdetection.dantion_big_query.detections\` WHERE type = 'kecelakaan'
+    `;
+	let options = {
+		query: queryStats,
+		location: "asia-southeast2",
+	};
+	const [detections] = await bigqueryClient.query(options);
 
+	return res.json({
+		error: false,
+		message: "Berhasil mendapatkan data statistik",
+		stat: detections[0],
+	});
+};
 export const detectionAdd = async (req, res) => {
 	const { lat, lon, type, userId, city } = req.body;
 	const file = req.files.recordUrl;

@@ -1,6 +1,7 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const swaggerUi = require("swagger-ui-express");
+const cors = require("cors");
 const YAML = require("yamljs");
 import bigQueryPackage from '@google-cloud/bigquery';
 const { BigQuery } = bigQueryPackage;
@@ -28,6 +29,7 @@ const app = express();
 const PORT = process.env.BASE_URL_PORT;
 const URL = `${process.env.BASE_URL}:${PORT}`;
 
+app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(upload({ createParentPath: true }));
 
