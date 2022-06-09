@@ -113,7 +113,7 @@ export const betaDetail = async (req, res) => {
                 name: betaExist.name,
                 email: betaExist.email,
                 city: betaExist.city,
-                isSent: betaExist.insisSentertedAt,
+                isSent: betaExist.isSent,
             },
         });
     } else {

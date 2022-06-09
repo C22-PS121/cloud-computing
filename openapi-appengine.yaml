@@ -979,7 +979,7 @@ definitions:
       city:
         type: "string"
       isSent:
-        type: "string"
+        type: "boolean"
   BetaSuccessResponse:
     type: "object"
     properties:
