@@ -33,7 +33,7 @@ export const betaAll = async (req, res) => {
     return res.json({
         error: false,
         message: "Berhasil Mendapatkan Semua Beta User",
-        users
+        beta
     });
 }
 
@@ -108,7 +108,7 @@ export const betaDetail = async (req, res) => {
         return res.json({
             error: false,
             message: "Berhasil mendapatakan detail beta user",
-            user: {
+            beta: {
                 id: betaExist.id,
                 name: betaExist.name,
                 email: betaExist.email,
