@@ -978,8 +978,8 @@ definitions:
         type: "string"
       city:
         type: "string"
-      insertedAt:
-        type: "string"
+      isSent:
+        type: "boolean"
   BetaSuccessResponse:
     type: "object"
     properties:

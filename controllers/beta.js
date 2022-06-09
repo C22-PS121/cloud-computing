@@ -41,7 +41,6 @@ export const betaForm = async (req, res) => {
     const {
         name, email, city,
     } = req.body;
-    const role = "umum"
     
     if (name === undefined || email === undefined || city === undefined) {
         return res.status(400).json({
@@ -66,21 +65,21 @@ export const betaForm = async (req, res) => {
     // }
 
     const id = `BR-${uuidv4()}`;
-    const insertedAt = new Date().toISOString();
+    const isSent = false;
 
-    const queryNewUser = `INSERT \`dangerdetection.dantion_big_query.betaRequest\`
-    (id, name, email, city, insertedAt) 
-    VALUES (@id, @name, @email, @city, @insertedAt)`;
+    const queryNewBeta = `INSERT \`dangerdetection.dantion_big_query.betaRequest\`
+    (id, name, email, city, isSent) 
+    VALUES (@id, @name, @email, @city, @isSent)`;
 
     options = {
-        query: queryNewUser,
+        query: queryNewBeta,
         location: 'asia-southeast2',
         params: {
             id: id, 
             name: name, 
             email: email,
             city: city,
-            insertedAt: insertedAt
+            isSent: isSent
         }
     };
 
@@ -114,7 +113,7 @@ export const betaDetail = async (req, res) => {
                 name: betaExist.name,
                 email: betaExist.email,
                 city: betaExist.city,
-                insertedAt: betaExist.insertedAt,
+                isSent: betaExist.isSent,
             },
         });
     } else {
