@@ -14,6 +14,8 @@ tags:
     description: "Access to Detections orders"
   - name: "Place"
     description: "Access to Place orders"
+  - name: "Beta"
+    description: "Access to who beta users orders"
   - name: "API-DOCS"
     description: "Access to API orders"
 consumes:
@@ -503,6 +505,76 @@ paths:
           description: "failed get delete place"
           schema:
             $ref: "#/definitions/StatusMessageResponse"
+  "/beta":
+    get:
+      tags:
+        - "Beta"
+      description: "Get All Beta"
+      operationId: "getbeta"
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          type: string
+          name: id
+          description: Id Admin
+      responses:
+        201:
+          description: "success get all beta user"
+          schema:
+            $ref: "#/definitions/BetaSuccessResponse"
+        400:
+          description: "failed get all beta user"
+          schema:
+            $ref: "#/definitions/StatusMessageResponse"
+  "/beta/form":
+    post:
+      tags:
+        - "Beta"
+      description: "Form Beta"
+      operationId: "betaform"
+      produces:
+        - "application/json"
+      parameters:
+        - in: body
+          name: Beta Form
+          description: Request body for beta form.
+          schema:
+            $ref: "#/definitions/BetaFormBody"
+      responses:
+        201:
+          description: "success fill beta form"
+          schema:
+            $ref: "#/definitions/StatusMessageResponse"
+        400:
+          description: "failed fill beta form"
+          schema:
+            $ref: "#/definitions/StatusMessageResponse"
+  "/beta/{id}":
+    get:
+      tags:
+        - "Beta"
+      security:
+        - Bearer: []
+      description: "Get Beta User Using ID"
+      operationId: "Betaid"
+      produces:
+        - "application/json"
+      parameters:
+        - name: id
+          in: path
+          description: "ID of beta"
+          required: true
+          type: "string"
+      responses:
+        201:
+          description: "success get detail beta user"
+          schema:
+            $ref: "#/definitions/BetaSuccessResponse"
+        400:
+          description: "failed get detail beta user"
+          schema:
+            $ref: "#/definitions/StatusMessageResponse"
 definitions:
   StatusMessageResponse:
     type: "object"
@@ -895,3 +967,34 @@ definitions:
           - "kejahatan"
           - "kecelakaan"
           - "kebakaran"
+  Beta:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      city:
+        type: "string"
+      insertedAt:
+        type: "string"
+  BetaSuccessResponse:
+    type: "object"
+    properties:
+      error:
+        type: "boolean"
+      message:
+        type: "string"
+      beta:
+        $ref: "#/definitions/Beta"
+  BetaFormBody:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      city:
+        type: "string"

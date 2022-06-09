@@ -22,6 +22,7 @@ import usersRoutes from './routes/users.js';
 import detectionRoutes from './routes/detections.js';
 import placeRoutes from './routes/places.js';
 import adminsRoutes from "./routes/admins.js";
+import betaRoutes from './routes/beta.js';
 
 const swaggerDocument = YAML.load("./openapi-appengine.yaml");
 
@@ -37,6 +38,7 @@ app.use('/users', usersRoutes);
 app.use('/detections', detectionRoutes);
 app.use('/places', placeRoutes);
 app.use("/admins", adminsRoutes);
+app.use("/beta", betaRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (req, res) => {
