@@ -28,8 +28,8 @@ Your mobile apps friends need to use Google Maps API. You can follow this tutori
 You must to be wisely when enable each API at GCP,only turn on what is needed.
 
 ### Google Cloud Storage
-1. Prepare The Google Cloud Storage folder, this [tutorial](https://cloud.google.com/storage/docs/creating-buckets?hl=en).
-2. Set permission The Google Cloud Storage folder, this [tutorial](https://cloud.google.com/storage/docs/access-control/iam-roles).
+1. Prepare The Google Cloud Storage Bucket, this [tutorial](https://cloud.google.com/storage/docs/creating-buckets?hl=en).
+2. Set permission The Google Cloud Storage Bucket, this [tutorial](https://cloud.google.com/storage/docs/access-control/iam-roles).
 3. Add The Google Cloud Storage to your file Node.js Express to require storage, this [tutorial](https://cloud.google.com/appengine/docs/flexible/nodejs/using-cloud-storage).
 
 ### Google BigQuery
