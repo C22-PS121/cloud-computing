@@ -1,6 +1,7 @@
 # Welcome to the DANTION Cloud Computing
 
 ## Prototype Architecture of DANTION Cloud Computing
+<img src="https://github.com/C22-PS121/cloud-computing/blob/main/assets/system.drawio.png">
 
 #### GCP Service :
 * Google Cloud Storage
