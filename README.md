@@ -1,5 +1,4 @@
 # Welcome to the DANTION Cloud Computing
-The quickest way to getting started with the DANTION-Cloud path. You can get [free-trial](https://cloud.google.com/free/docs/gcp-free-tier) 90-day with $300 GCP product credits or  buy some credit at [GCP](https://cloud.google.com/gcp) (**this amount just for SIMULATION ONLY** and only lasted 1 month).
 
 ## Prototype Architecture of DANTION Cloud Computing
 
