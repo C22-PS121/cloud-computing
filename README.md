@@ -35,7 +35,8 @@ You must to be wisely when enable each API at GCP,only turn on what is needed.
 ### Google BigQuery
 1. Open Google BigQuery.
 2. Create dataset, this [tutorial](https://cloud.google.com/bigquery/docs/datasets?hl=en).
-3. Add The Google BigQuery to your file Node.js Express, this [tutorial](https://codelabs.developers.google.com/codelabs/cloud-bigquery-nodejs).
+3. Create tables schema, this [tutorial](https://cloud.google.com/bigquery/docs/tables).
+4. Add The Google BigQuery to your file Node.js Express, this [tutorial](https://codelabs.developers.google.com/codelabs/cloud-bigquery-nodejs).
 
 ### Google App Engine
 After Google Cloud Storage and Google BigQuery services step is finished, deploy Google App Engine with Node.js. this [tutorial](https://cloud.google.com/endpoints/docs/openapi/get-started-app-engine#endpoints_configure).
