@@ -20,11 +20,11 @@
 ### Requirements
 * Google Account.
 * Credit or Debit card to buy GCP credits.
-* Add your teammates to join your GCP at this [tutorial](https://www.youtube.com/watch?v=PqMGmRhKsnM) 
+* Service account key, A JSON key file tutorial [here](https://cloud.google.com/docs/authentication/getting-started#create-service-account-console).
 
 You can claim your free-trial $300 tutorial [here](https://k21academy.com/google-cloud/create-google-cloud-free-tier-account/). <br>
 If you have an GCP coupon, you can redeem at [here](https://console.cloud.google.com/trygcp).<br>
-Your mobile apps friends need to use Google Maps API. You can follow this tutorial [here](https://developers.google.com/maps/documentation/android-sdk/start#set_up_in_cloud_console).<br>
+Your mobile apps friends need to use Google Maps API. You can follow this tutorial [here](https://developers.google.com/maps/documentation/android-sdk/start#set_up_in_cloud_console). So you need add your teammates to join your GCP at this [tutorial](https://www.youtube.com/watch?v=PqMGmRhKsnM)  <br>
 You must to be wisely when enable each API at GCP,only turn on what is needed.
 
 ### Google Cloud Storage
